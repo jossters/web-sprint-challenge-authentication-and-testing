@@ -15,5 +15,12 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/jokes', restrict, jokesRouter); // only logged-in users should have access!
-
-module.exports = server;
+server.use((err, req, res, next /*eslint-disable-line */) => {
+    res.status(err.status || 500).json({
+      note: "Problem!!!",
+      message: err.message,
+      stack: err.stack,
+    });
+  });
+  
+  module.exports = server;
